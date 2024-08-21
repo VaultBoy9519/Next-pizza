@@ -17,5 +17,13 @@ exports.Header = function (className) {
             React.createElement("div", { className: 'flex items-center gap-3' },
                 React.createElement(ui_1.Button, { variant: 'outline', className: 'flex items-center gap-1' },
                     React.createElement(lucide_react_1.User, { size: 16 }),
-                    "\u0412\u043E\u0439\u0442\u0438")))));
+                    "\u0412\u043E\u0439\u0442\u0438"),
+                React.createElement("div", null,
+                    React.createElement(ui_1.Button, { className: 'group relative' },
+                        React.createElement("b", null, "520 \u0420"),
+                        React.createElement("span", { className: 'h-full w-[1px] bg-white/30 mx-3' }),
+                        React.createElement("div", { className: 'flex items-center gap-1 transition duration-300 group-hover:opacity-0' },
+                            React.createElement(lucide_react_1.ShoppingCart, { className: 'h-4 w-4 relative', strokeWidth: 2 }),
+                            React.createElement("b", null, "3")),
+                        React.createElement(lucide_react_1.ArrowRight, { className: 'w-5 absolute right-5 transition duration-300 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0' })))))));
 };
