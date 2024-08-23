@@ -5,11 +5,11 @@ import { FC } from 'react'
 import { Button } from '../ui'
 import { Container } from './container'
 
-interface IProps {
+interface Props {
 	className?: string
 }
 
-export const Header: FC<IProps> = className => {
+export const Header: FC<Props> = className => {
 	return (
 		<div className={cn('border border-b', className)}>
 			<Container className='flex items-center justify-between py-8'>
