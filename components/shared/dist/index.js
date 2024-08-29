@@ -25,6 +25,8 @@ var products_group_list_1 = require("./products-group-list");
 __createBinding(exports, products_group_list_1, "ProductsGroupList");
 var range_slider_1 = require("./range-slider");
 __createBinding(exports, range_slider_1, "RangeSlider");
+var search_input_1 = require("./search-input");
+__createBinding(exports, search_input_1, "SearchInput");
 var sort_popup_1 = require("./sort-popup");
 __createBinding(exports, sort_popup_1, "SortPopup");
 var title_1 = require("./title");
