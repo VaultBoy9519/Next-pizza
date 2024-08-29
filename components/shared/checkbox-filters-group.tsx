@@ -1,6 +1,6 @@
 'use client'
 import { FC, useState } from 'react'
-import { Input } from '../ui'
+import { Input, Skeleton } from '../ui'
 import { FilterCheckbox, FilterCheckboxProps } from './filter-checkbox'
 
 interface Props {
@@ -12,16 +12,30 @@ interface Props {
 	onChange?: (values: string[]) => void
 	defaultValue?: string[]
 	className?: string
+	loading?: boolean
 }
 
-export const CheckboxFiltersGroup: FC<Props> = ({ title, items, defaultItems, limit, searchInputPlaceholder = 'Поиск...', onChange, defaultValue, className }) => {
+export const CheckboxFiltersGroup: FC<Props> = ({ title, items, defaultItems, limit, searchInputPlaceholder = 'Поиск...', onChange, defaultValue, className, loading }) => {
 	const [showAll, setShowAll] = useState(false)
 
 	const [searchValue, setSearchValue] = useState('')
-	console.log('🚀 ~ searchValue:', searchValue)
 
 	const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(e.target.value)
+	}
+
+	if (loading) {
+		return (
+			<div className={className}>
+				<p className='font-bold mb-3'>{title}</p>
+
+				{...Array(limit)
+					.fill(0)
+					.map((_, index) => <Skeleton key={index} className='h-6 mb-4 rounded-[8px]' />)}
+
+				<Skeleton className='w-28 h-6 mb-4 rounded-[8px]' />
+			</div>
+		)
 	}
 
 	const list = showAll ? items.filter(item => item.text.toLowerCase().includes(searchValue.toLowerCase())) : defaultItems.slice(0, limit)

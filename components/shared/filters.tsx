@@ -1,3 +1,5 @@
+'use client'
+import { useFilterIngredients } from '@/hooks/useFilterIngredients'
 import React from 'react'
 import { Input } from '../ui'
 import { CheckboxFiltersGroup, FilterCheckbox, RangeSlider, Title } from './index'
@@ -7,6 +9,8 @@ interface Props {
 }
 
 export const Filters: React.FC<Props> = ({ className }) => {
+	const { ingredients, loading } = useFilterIngredients()
+	const items = ingredients.map(item => ({ value: String(item.id), text: item.name }))
 	return (
 		<div className={className}>
 			<Title text={'Фильтрация'} size={'sm'} className='mb-5 font-bold'></Title>
@@ -24,27 +28,7 @@ export const Filters: React.FC<Props> = ({ className }) => {
 				</div>
 				<RangeSlider min={0} max={5000} step={10} value={[0, 5000]} />
 			</div>
-			<CheckboxFiltersGroup
-				title={'Ингридиенты'}
-				className='mt-5'
-				limit={6}
-				items={[
-					{ text: 'Сырный соус', value: '3' },
-					{ text: 'Моцарелла', value: '4' },
-					{ text: 'Чеснок', value: '5' },
-					{ text: 'Соленые огурчики', value: '6' },
-					{ text: 'Сырный соус', value: '7' },
-					{ text: 'Моцарелла', value: '8' },
-					{ text: 'Чеснок', value: '9' },
-					{ text: 'Соленые огурчики', value: '10' },
-				]}
-				defaultItems={[
-					{ text: 'Сырный соус', value: '11' },
-					{ text: 'Моцарелла', value: '12' },
-					{ text: 'Чеснок', value: '13' },
-					{ text: 'Соленые огурчики', value: '14' },
-				]}
-			/>
+			<CheckboxFiltersGroup title={'Ингридиенты'} className='mt-5' limit={6} loading={loading} items={items} defaultItems={items.slice(0, 6)} />
 		</div>
 	)
 }

@@ -6,13 +6,20 @@ var react_1 = require("react");
 var ui_1 = require("../ui");
 var filter_checkbox_1 = require("./filter-checkbox");
 exports.CheckboxFiltersGroup = function (_a) {
-    var title = _a.title, items = _a.items, defaultItems = _a.defaultItems, limit = _a.limit, _b = _a.searchInputPlaceholder, searchInputPlaceholder = _b === void 0 ? 'Поиск...' : _b, onChange = _a.onChange, defaultValue = _a.defaultValue, className = _a.className;
+    var title = _a.title, items = _a.items, defaultItems = _a.defaultItems, limit = _a.limit, _b = _a.searchInputPlaceholder, searchInputPlaceholder = _b === void 0 ? 'Поиск...' : _b, onChange = _a.onChange, defaultValue = _a.defaultValue, className = _a.className, loading = _a.loading;
     var _c = react_1.useState(false), showAll = _c[0], setShowAll = _c[1];
     var _d = react_1.useState(''), searchValue = _d[0], setSearchValue = _d[1];
-    console.log('🚀 ~ searchValue:', searchValue);
     var onChangeSearch = function (e) {
         setSearchValue(e.target.value);
     };
+    if (loading) {
+        return (React.createElement("div", { className: className },
+            React.createElement("p", { className: 'font-bold mb-3' }, title),
+            Array(limit)
+                .fill(0)
+                .map(function (_, index) { return React.createElement(ui_1.Skeleton, { key: index, className: 'h-6 mb-4 rounded-[8px]' }); }),
+            React.createElement(ui_1.Skeleton, { className: 'w-28 h-6 mb-4 rounded-[8px]' })));
+    }
     var list = showAll ? items.filter(function (item) { return item.text.toLowerCase().includes(searchValue.toLowerCase()); }) : defaultItems.slice(0, limit);
     return (React.createElement("div", { className: className },
         React.createElement("p", { className: 'font-bold mb-3' }, title),
