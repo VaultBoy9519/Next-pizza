@@ -36,14 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.useFilterIngredients = void 0;
+exports.useIngredients = void 0;
 var api_client_1 = require("@/services/api-client");
 var react_1 = require("react");
-var react_use_1 = require("react-use");
-exports.useFilterIngredients = function (values) {
-    var _a = react_1.useState(true), loading = _a[0], setLoading = _a[1];
-    var _b = react_1.useState([]), ingredients = _b[0], setIngredients = _b[1];
-    var _c = react_use_1.useSet(new Set(values)), selectedIds = _c[0], toggle = _c[1].toggle;
+exports.useIngredients = function () {
+    var _a = react_1.useState([]), ingredients = _a[0], setIngredients = _a[1];
+    var _b = react_1.useState(true), loading = _b[0], setLoading = _b[1];
     react_1.useEffect(function () {
         function getIngredients() {
             return __awaiter(this, void 0, void 0, function () {
@@ -70,8 +68,5 @@ exports.useFilterIngredients = function (values) {
         }
         getIngredients();
     }, []);
-    var setSelectedIngredients = function (ids) {
-        ids.forEach(selectedIds.add);
-    };
-    return { ingredients: ingredients, loading: loading, selectedIngredients: selectedIds, onAddId: toggle, setSelectedIngredients: setSelectedIngredients };
+    return { ingredients: ingredients, loading: loading };
 };

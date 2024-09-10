@@ -7,9 +7,10 @@ interface ReturnProps {
 	loading: boolean
 }
 
-export const useFilterIngredients = (): ReturnProps => {
-	const [loading, setLoading] = useState(true)
+export const useIngredients = (): ReturnProps => {
 	const [ingredients, setIngredients] = useState<Ingredient[]>([])
+	const [loading, setLoading] = useState(true)
+
 	useEffect(() => {
 		async function getIngredients() {
 			try {

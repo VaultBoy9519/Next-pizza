@@ -6,16 +6,18 @@ import { FilterCheckbox, FilterCheckboxProps } from './filter-checkbox'
 interface Props {
 	title: string
 	items: FilterCheckboxProps[]
-	defaultItems: FilterCheckboxProps[]
-	limit: number
+	defaultItems?: FilterCheckboxProps[]
+	limit?: number
 	searchInputPlaceholder?: string
-	onChange?: (values: string[]) => void
+	onClickCheckbox?: (id: string) => void
 	defaultValue?: string[]
 	className?: string
 	loading?: boolean
+	selected?: Set<string>
+	name?: string
 }
 
-export const CheckboxFiltersGroup: FC<Props> = ({ title, items, defaultItems, limit, searchInputPlaceholder = 'Поиск...', onChange, defaultValue, className, loading }) => {
+export const CheckboxFiltersGroup: FC<Props> = ({ title, items, defaultItems, limit = 5, searchInputPlaceholder = 'Поиск...', onClickCheckbox, defaultValue, className, loading, selected, name }) => {
 	const [showAll, setShowAll] = useState(false)
 
 	const [searchValue, setSearchValue] = useState('')
@@ -38,7 +40,7 @@ export const CheckboxFiltersGroup: FC<Props> = ({ title, items, defaultItems, li
 		)
 	}
 
-	const list = showAll ? items.filter(item => item.text.toLowerCase().includes(searchValue.toLowerCase())) : defaultItems.slice(0, limit)
+	const list = showAll ? items.filter(item => item.text.toLowerCase().includes(searchValue.toLowerCase())) : (defaultItems || items).slice(0, limit)
 
 	return (
 		<div className={className}>
@@ -50,7 +52,15 @@ export const CheckboxFiltersGroup: FC<Props> = ({ title, items, defaultItems, li
 			)}
 			<div className='flex flex-col gap-4 max-h-96 pr-2 overflow-auto scrollbar'>
 				{list.map(item => (
-					<FilterCheckbox key={String(item.value)} text={item.text} value={item.value} endAdornment={item.endAdornment} onCheckedChange={ids => console.log(ids)} checked={false} />
+					<FilterCheckbox
+						key={String(item.value)}
+						text={item.text}
+						value={item.value}
+						endAdornment={item.endAdornment}
+						checked={selected?.has(item.value)}
+						onCheckedChange={() => onClickCheckbox?.(item.value)}
+						name={name}
+					/>
 				))}
 			</div>
 			{items.length > limit && (
