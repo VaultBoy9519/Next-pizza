@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.metadata = void 0;
-var shared_1 = require("@/components/shared");
+var shared_1 = require("@/shared/components/shared");
 exports.metadata = {
     title: 'Next Pizza | Главная'
 };
