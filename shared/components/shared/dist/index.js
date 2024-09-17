@@ -28,6 +28,8 @@ var group_variants_1 = require("./group-variants");
 __createBinding(exports, group_variants_1, "GroupVariants");
 var header_1 = require("./header");
 __createBinding(exports, header_1, "Header");
+var ingredient_item_1 = require("./ingredient-item");
+__createBinding(exports, ingredient_item_1, "IngredientItem");
 __exportStar(require("./modals"), exports);
 var pizza_image_1 = require("./pizza-image");
 __createBinding(exports, pizza_image_1, "PizzaImage");
