@@ -14,5 +14,5 @@ exports.ChooseProductModal = function (_a) {
     var isPizzaForm = Boolean(product.items[0].pizzaType);
     var name = product.name, imageUrl = product.imageUrl;
     return (react_1["default"].createElement(dialog_1.Dialog, { open: Boolean(product), onOpenChange: function () { return router.back(); } },
-        react_1["default"].createElement(dialog_1.DialogContent, { className: utils_1.cn('p-0 w-[1060px] max-w-[1060px] min-h-[550px] bg-white overflow-hidden', className) }, isPizzaForm ? react_1["default"].createElement(choose_pizza_form_1.ChoosePizzaForm, { name: name, imageUrl: imageUrl, ingredients: product.ingredients }) : react_1["default"].createElement(choose_product_form_1.ChooseProductForm, { name: name, imageUrl: imageUrl }))));
+        react_1["default"].createElement(dialog_1.DialogContent, { className: utils_1.cn('p-0 w-[1060px] max-w-[1060px] min-h-[550px] bg-white overflow-hidden', className) }, isPizzaForm ? react_1["default"].createElement(choose_pizza_form_1.ChoosePizzaForm, { name: name, items: product.items, imageUrl: imageUrl, ingredients: product.ingredients }) : react_1["default"].createElement(choose_product_form_1.ChooseProductForm, { name: name, imageUrl: imageUrl }))));
 };

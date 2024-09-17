@@ -7,6 +7,10 @@ interface ReturnProps {
 	loading: boolean
 }
 
+/**
+ * A hook to get all ingredients from the server.
+ * @returns an object with ingredients and a boolean indicating whether the data is being loaded
+ */
 export const useIngredients = (): ReturnProps => {
 	const [ingredients, setIngredients] = useState<Ingredient[]>([])
 	const [loading, setLoading] = useState(true)

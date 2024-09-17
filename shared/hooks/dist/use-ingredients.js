@@ -39,6 +39,10 @@ exports.__esModule = true;
 exports.useIngredients = void 0;
 var api_client_1 = require("@/shared/services/api-client");
 var react_1 = require("react");
+/**
+ * A hook to get all ingredients from the server.
+ * @returns an object with ingredients and a boolean indicating whether the data is being loaded
+ */
 exports.useIngredients = function () {
     var _a = react_1.useState([]), ingredients = _a[0], setIngredients = _a[1];
     var _b = react_1.useState(true), loading = _b[0], setLoading = _b[1];

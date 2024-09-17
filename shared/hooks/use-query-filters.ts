@@ -3,6 +3,11 @@ import qs from 'qs'
 import { useEffect } from 'react'
 import { Filters } from './use-filters'
 
+/**
+ * Updates the current URL query string to reflect the current filter selection.
+ *
+ * @param filters The current filter values.
+ */
 export const useQueryFilters = (filters: Filters) => {
 	const router = useRouter()
 

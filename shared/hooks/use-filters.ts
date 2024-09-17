@@ -27,19 +27,20 @@ interface ReturnProps extends Filters {
 	setSelectedIngredients: (value: string) => void
 }
 
+/**
+ * Hook to manage filters state.
+ * It returns object with current sizes, pizza types, selected ingredients, prices and functions to update them.
+ * @returns {ReturnProps}
+ */
 export const useFilters = (): ReturnProps => {
 	const searchParams = useSearchParams() as unknown as Map<keyof QueryFilters, string>
 
-	//Фильтр ингридиентов
 	const [selectedIngredients, { toggle: setSelectedIngredients }] = useSet(new Set<string>(searchParams.get('ingredients')?.split(',') || []))
 
-	//Фильтр размеров
 	const [sizes, { toggle: setSizes }] = useSet(new Set<string>(searchParams.get('sizes')?.split(',') || []))
 
-	//Фильтр типов
 	const [pizzaTypes, { toggle: setPizzaTypes }] = useSet(new Set<string>(searchParams.get('pizzaTypes')?.split(',') || []))
 
-	//Фильтр цен
 	const [prices, setPrices] = useState<PriceProps>({
 		priceFrom: Number(searchParams.get('priceFrom')) || undefined,
 		priceTo: Number(searchParams.get('priceTo')) || undefined,
