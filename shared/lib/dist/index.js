@@ -11,5 +11,7 @@ var calc_total_pizza_price_1 = require("./calc-total-pizza-price");
 __createBinding(exports, calc_total_pizza_price_1, "calcTotalPizzaPrice");
 var get_available_pizza_sizes_1 = require("./get-available-pizza-sizes");
 __createBinding(exports, get_available_pizza_sizes_1, "getAvailablePizzaSizes");
+var get_cart_items_details_1 = require("./get-cart-items-details");
+__createBinding(exports, get_cart_items_details_1, "getCartItemsDetails");
 var get_pizza_details_1 = require("./get-pizza-details");
 __createBinding(exports, get_pizza_details_1, "getPizzaDetails");
