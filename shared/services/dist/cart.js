@@ -36,14 +36,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getAll = void 0;
-var constants_1 = require("./constants");
+exports.addCartItem = exports.removeCartItem = exports.updateItemQuantity = exports.fetchCart = void 0;
 var instance_1 = require("./instance");
-exports.getAll = function () { return __awaiter(void 0, void 0, Promise, function () {
+exports.fetchCart = function () { return __awaiter(void 0, void 0, Promise, function () {
     var data;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, instance_1.axiosInstance.get(constants_1.ApiRoutes.INGREDIENTS)];
+            case 0: return [4 /*yield*/, instance_1.axiosInstance.get('/cart')];
+            case 1:
+                data = (_a.sent()).data;
+                return [2 /*return*/, data];
+        }
+    });
+}); };
+exports.updateItemQuantity = function (itemId, quantity) { return __awaiter(void 0, void 0, Promise, function () {
+    var data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, instance_1.axiosInstance.patch('/cart/' + itemId, { quantity: quantity })];
+            case 1:
+                data = (_a.sent()).data;
+                return [2 /*return*/, data];
+        }
+    });
+}); };
+exports.removeCartItem = function (itemId) { return __awaiter(void 0, void 0, Promise, function () {
+    var data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, instance_1.axiosInstance["delete"]('/cart/' + itemId)];
+            case 1:
+                data = (_a.sent()).data;
+                return [2 /*return*/, data];
+        }
+    });
+}); };
+exports.addCartItem = function (values) { return __awaiter(void 0, void 0, Promise, function () {
+    var data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, instance_1.axiosInstance.post('/cart', values)];
             case 1:
                 data = (_a.sent()).data;
                 return [2 /*return*/, data];

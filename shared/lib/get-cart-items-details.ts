@@ -1,17 +1,16 @@
-import { Ingredient } from '@prisma/client'
 import { mapPizzaType, PizzaSize, PizzaType } from '../constants/pizza'
+import { CartStateItem } from './get-cart-details'
 
 /**
  * Generate a string of details about the pizza, given the type, size, and list of ingredients.
  * The string will be in the format: "typeName (size) см, ingredient1, ingredient2, ..."
  * If there are no ingredients, the string will only contain the type and size.
- *
- * @param {PizzaType} pizzaType - the type of pizza
- * @param {PizzaSize} pizzaSize - the size of the pizza
- * @param {Ingredient[]} ingredients - the list of ingredients
+ * @param {CartStateItem['ingredients']} ingredients - list of ingredients
+ * @param {PizzaType} pizzaType - type of pizza
+ * @param {PizzaSize} pizzaSize - size of pizza
  * @returns {string} the string of details
  */
-export const getCartItemsDetails = (pizzaType: PizzaType, pizzaSize: PizzaSize, ingredients: Ingredient[]) => {
+export const getCartItemsDetails = (ingredients: CartStateItem['ingredients'], pizzaType: PizzaType, pizzaSize: PizzaSize) => {
 	const details = []
 
 	if (pizzaSize && pizzaType) {

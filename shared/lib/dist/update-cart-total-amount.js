@@ -36,17 +36,65 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.search = void 0;
-var constants_1 = require("./constants");
-var instance_1 = require("./instance");
-exports.search = function (query) { return __awaiter(void 0, void 0, Promise, function () {
-    var data;
+exports.updateCartTotalAmount = void 0;
+var prisma_client_1 = require("@/prisma/prisma-client");
+var calc_cart_item_total_price_1 = require("./calc-cart-item-total-price");
+exports.updateCartTotalAmount = function (token) { return __awaiter(void 0, void 0, void 0, function () {
+    var userCart, totalAmount;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, instance_1.axiosInstance.get(constants_1.ApiRoutes.SEARCH_PRODUCTS, { params: { query: query } })];
+            case 0: return [4 /*yield*/, prisma_client_1.prisma.cart.findFirst({
+                    where: {
+                        token: token
+                    },
+                    include: {
+                        items: {
+                            orderBy: {
+                                createdAt: 'desc'
+                            },
+                            include: {
+                                productItem: {
+                                    include: {
+                                        product: true
+                                    }
+                                },
+                                ingredients: true
+                            }
+                        }
+                    }
+                })];
             case 1:
-                data = (_a.sent()).data;
-                return [2 /*return*/, data];
+                userCart = _a.sent();
+                if (!userCart) {
+                    return [2 /*return*/];
+                }
+                totalAmount = userCart.items.reduce(function (acc, item) {
+                    return acc + calc_cart_item_total_price_1.calcCartItemTotalPrice(item);
+                }, 0);
+                return [4 /*yield*/, prisma_client_1.prisma.cart.update({
+                        where: {
+                            id: userCart.id
+                        },
+                        data: {
+                            totalAmount: totalAmount
+                        },
+                        include: {
+                            items: {
+                                orderBy: {
+                                    createdAt: 'desc'
+                                },
+                                include: {
+                                    productItem: {
+                                        include: {
+                                            product: true
+                                        }
+                                    },
+                                    ingredients: true
+                                }
+                            }
+                        }
+                    })];
+            case 2: return [2 /*return*/, _a.sent()];
         }
     });
 }); };

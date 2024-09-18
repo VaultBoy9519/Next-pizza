@@ -1,3 +1,4 @@
+
 import { cn } from '@/shared/lib/utils'
 import React from 'react'
 
@@ -6,8 +7,10 @@ import * as CartItem from './cart-item-details'
 import { CartItemProps } from './cart-item-details/cart-item-details.types'
 import { CountButton } from './count-button'
 
+export type TCountButton = 'plus' | 'minus'
+
 interface Props extends CartItemProps {
-	onClickCountButton?: (type: 'plus' | 'minus') => void
+	onClickCountButton?: (type: TCountButton) => void
 	onClickRemove?: () => void
 	className?: string
 }

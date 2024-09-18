@@ -6,13 +6,12 @@ var pizza_1 = require("../constants/pizza");
  * Generate a string of details about the pizza, given the type, size, and list of ingredients.
  * The string will be in the format: "typeName (size) см, ingredient1, ingredient2, ..."
  * If there are no ingredients, the string will only contain the type and size.
- *
- * @param {PizzaType} pizzaType - the type of pizza
- * @param {PizzaSize} pizzaSize - the size of the pizza
- * @param {Ingredient[]} ingredients - the list of ingredients
+ * @param {CartStateItem['ingredients']} ingredients - list of ingredients
+ * @param {PizzaType} pizzaType - type of pizza
+ * @param {PizzaSize} pizzaSize - size of pizza
  * @returns {string} the string of details
  */
-exports.getCartItemsDetails = function (pizzaType, pizzaSize, ingredients) {
+exports.getCartItemsDetails = function (ingredients, pizzaType, pizzaSize) {
     var details = [];
     if (pizzaSize && pizzaType) {
         var typeName = pizza_1.mapPizzaType[pizzaType];

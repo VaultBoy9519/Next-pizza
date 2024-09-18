@@ -17,7 +17,7 @@ interface Props {
 	ingredients: Ingredient[]
 	items: ProductItem[]
 	loading?: boolean
-	onClickAddCart?: (itemId: number, ingredients: number[]) => void
+	onClickAddCart: (itemId: number, ingredients: number[]) => void
 	className?: string
 }
 
@@ -26,7 +26,9 @@ export const ChoosePizzaForm: React.FC<Props> = ({ name, items, imageUrl, ingred
 
 	const { totalPrice, textDetails } = getPizzaDetails(type, size, items, ingredients, selectedIngredients)
 
-	const handleClickAdd = () => {}
+	const handleClickAdd = () => {
+		if (currentItemId) onClickAddCart(currentItemId, Array.from(selectedIngredients))
+	}
 
 	return (
 		<div className={cn(className, 'flex flex-1')}>
