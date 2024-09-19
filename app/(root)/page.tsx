@@ -26,7 +26,6 @@ export default async function Home() {
 						<Filters />
 					</div>
 
-					{/* Товары */}
 					<div className='flex-1'>
 						<div className='flex flex-col gap-20'>
 							{categories.map(category => category.products.length > 0 && <ProductsGroupList key={category.id} title={category.name} categoryId={category.id} items={category.products} />)}

@@ -26,7 +26,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({ name, items, imageUrl, ingred
 
 	const { totalPrice, textDetails } = getPizzaDetails(type, size, items, ingredients, selectedIngredients)
 
-	const handleClickAdd = () => {
+	const onSubmit = () => {
 		if (currentItemId) onClickAddCart(currentItemId, Array.from(selectedIngredients))
 	}
 
@@ -58,7 +58,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({ name, items, imageUrl, ingred
 						))}
 					</div>
 				</div>
-				<Button onClick={handleClickAdd} className='h-[55px] px-10 text-base rounded-[18px] w-full mt-10'>
+				<Button onClick={() => onSubmit()} loading={loading} className='h-[55px] px-10 text-base rounded-[18px] w-full mt-10'>
 					Добавить в корзину за {totalPrice} ₽
 				</Button>
 			</div>
