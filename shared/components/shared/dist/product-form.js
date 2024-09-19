@@ -1,3 +1,4 @@
+'use client';
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -36,29 +37,44 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var shared_1 = require("@/shared/components/shared");
-var lib_1 = require("@/shared/lib");
-function Home(_a) {
-    var searchParams = _a.searchParams;
-    return __awaiter(this, void 0, void 0, function () {
-        var categories;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, lib_1.findPizzas(searchParams)];
+exports.ProductForm = void 0;
+var store_1 = require("@/shared/store");
+var react_1 = require("react");
+var react_hot_toast_1 = require("react-hot-toast");
+var choose_pizza_form_1 = require("./choose-pizza-form");
+var choose_product_form_1 = require("./choose-product-form");
+exports.ProductForm = function (_a) {
+    var product = _a.product, endAction = _a.endAction;
+    var _b = store_1.useCartStore(function (state) { return [state.addCartItem, state.loading]; }), addCartItem = _b[0], loading = _b[1];
+    var onSubmit = function (productItemId, ingredients) { return __awaiter(void 0, void 0, void 0, function () {
+        var itemId, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    itemId = productItemId !== null && productItemId !== void 0 ? productItemId : firstItem.id;
+                    return [4 /*yield*/, addCartItem({
+                            productItemId: itemId,
+                            ingredients: ingredients
+                        })];
                 case 1:
-                    categories = _b.sent();
-                    return [2 /*return*/, (React.createElement(React.Fragment, null,
-                            React.createElement(shared_1.Container, { className: 'mt-10' },
-                                React.createElement(shared_1.Title, { text: '\u0412\u0441\u0435 \u043F\u0438\u0446\u0446\u044B', size: 'lg', className: 'font-extrabold' })),
-                            React.createElement(shared_1.TopBar, { categories: categories.filter(function (category) { return category.products.length > 0; }) }),
-                            React.createElement(shared_1.Container, { className: 'pb-14 mt-10' },
-                                React.createElement("div", { className: 'flex gap-[60px]' },
-                                    React.createElement("div", { className: 'w-[250px]' },
-                                        React.createElement(shared_1.Filters, null)),
-                                    React.createElement("div", { className: 'flex-1' },
-                                        React.createElement("div", { className: 'flex flex-col gap-20' }, categories.map(function (category) { return category.products.length > 0 && React.createElement(shared_1.ProductsGroupList, { key: category.id, title: category.name, categoryId: category.id, items: category.products }); })))))))];
+                    _a.sent();
+                    react_hot_toast_1["default"].success(product.name + ': товар добавлен в корзину');
+                    endAction === null || endAction === void 0 ? void 0 : endAction();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_1 = _a.sent();
+                    react_hot_toast_1["default"].error('Не удалось добавить товар в корзину');
+                    console.error(err_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
-    });
-}
-exports["default"] = Home;
+    }); };
+    var items = product.items, name = product.name, imageUrl = product.imageUrl, ingredients = product.ingredients;
+    var firstItem = items[0];
+    var isPizzaForm = Boolean(items[0].pizzaType);
+    {
+        return isPizzaForm ? (react_1["default"].createElement(choose_pizza_form_1.ChoosePizzaForm, { onClickAddCart: onSubmit, name: name, items: items, imageUrl: imageUrl, ingredients: ingredients, loading: loading })) : (react_1["default"].createElement(choose_product_form_1.ChooseProductForm, { onSubmit: onSubmit, name: name, price: firstItem.price, imageUrl: imageUrl, loading: loading }));
+    }
+};

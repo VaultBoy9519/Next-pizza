@@ -36,5 +36,5 @@ exports.useFilters = function () {
             return (__assign(__assign({}, prev), (_a = {}, _a[name] = value, _a)));
         });
     };
-    return { sizes: sizes, pizzaTypes: pizzaTypes, selectedIngredients: selectedIngredients, prices: prices, setPrices: updatePrice, setPizzaTypes: setPizzaTypes, setSizes: setSizes, setSelectedIngredients: setSelectedIngredients };
+    return react_1.useMemo(function () { return ({ sizes: sizes, pizzaTypes: pizzaTypes, selectedIngredients: selectedIngredients, prices: prices, setPrices: updatePrice, setPizzaTypes: setPizzaTypes, setSizes: setSizes, setSelectedIngredients: setSelectedIngredients }); }, [sizes, pizzaTypes, selectedIngredients, prices]);
 };

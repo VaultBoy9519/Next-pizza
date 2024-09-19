@@ -26,5 +26,5 @@ exports.useQueryFilters = function (filters) {
         var params = __assign(__assign({}, filters.prices), { pizzaTypes: Array.from(filters.pizzaTypes), sizes: Array.from(filters.sizes), ingredients: Array.from(filters.selectedIngredients) });
         var query = qs_1["default"].stringify(params, { arrayFormat: 'comma' });
         router.push("?" + query, { scroll: false });
-    }, [filters, router]);
+    }, [filters]);
 };

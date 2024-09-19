@@ -41,6 +41,8 @@ var pizza_image_1 = require("./pizza-image");
 __createBinding(exports, pizza_image_1, "PizzaImage");
 var product_card_1 = require("./product-card");
 __createBinding(exports, product_card_1, "ProductCard");
+var product_form_1 = require("./product-form");
+__createBinding(exports, product_form_1, "ProductForm");
 var products_group_list_1 = require("./products-group-list");
 __createBinding(exports, products_group_list_1, "ProductsGroupList");
 var range_slider_1 = require("./range-slider");

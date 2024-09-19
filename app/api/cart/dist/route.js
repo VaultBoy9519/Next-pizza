@@ -109,12 +109,15 @@ function POST(req) {
                     return [4 /*yield*/, req.json()];
                 case 2:
                     data = (_c.sent());
-                    console.log('🚀 ~ POST ~ data:', data);
                     return [4 /*yield*/, prisma_client_1.prisma.cartItem.findFirst({
                             where: {
                                 cartId: userCart.id,
                                 productItemId: data.productItemId,
-                                ingredients: { every: { id: { "in": data.ingredients } } }
+                                ingredients: {
+                                    every: {
+                                        id: { "in": data.ingredients }
+                                    }
+                                }
                             }
                         })];
                 case 3:
