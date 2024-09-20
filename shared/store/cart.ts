@@ -3,6 +3,8 @@ import { CartStateItem, getCartDetails } from '../lib/get-cart-details'
 import { Api } from '../services/api-client'
 import { CreateCartItemValues } from '../services/dto/cart-dto'
 
+export type TUpdateCountQuantity = (itemId: number, quantity: number) => Promise<void>
+
 export interface CartState {
 	loading: boolean
 	error: boolean
@@ -10,7 +12,7 @@ export interface CartState {
 	items: CartStateItem[]
 
 	getCartItems: () => Promise<void>
-	updateItemQuantity: (itemId: number, quantity: number) => Promise<void>
+	updateItemQuantity: TUpdateCountQuantity
 	addCartItem: (values: CreateCartItemValues) => Promise<void>
 	removeCartItem: (id: number) => Promise<void>
 }

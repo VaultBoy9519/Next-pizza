@@ -23,5 +23,7 @@ var get_cart_items_details_1 = require("./get-cart-items-details");
 __createBinding(exports, get_cart_items_details_1, "getCartItemsDetails");
 var get_pizza_details_1 = require("./get-pizza-details");
 __createBinding(exports, get_pizza_details_1, "getPizzaDetails");
+var on_click_count_button_1 = require("./on-click-count-button");
+__createBinding(exports, on_click_count_button_1, "onClickCountButton");
 var update_cart_total_amount_1 = require("./update-cart-total-amount");
 __createBinding(exports, update_cart_total_amount_1, "updateCartTotalAmount");

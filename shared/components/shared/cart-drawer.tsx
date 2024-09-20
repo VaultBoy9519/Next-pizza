@@ -1,29 +1,21 @@
 'use client'
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/shared/components/ui/sheet'
 import { PizzaSize, PizzaType } from '@/shared/constants/pizza'
-import { getCartItemsDetails } from '@/shared/lib'
+import { useCart } from '@/shared/hooks'
+import { getCartItemsDetails, onClickCountButton } from '@/shared/lib'
 import { cn } from '@/shared/lib/utils'
-import { updateItemQuantity } from '@/shared/services/cart'
-import { useCartStore } from '@/shared/store'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from '../ui'
-import { CartDrawerItem, TCountButton } from './cart-drawer-item'
+import { CartDrawerItem } from './cart-drawer-item'
 import { Title } from './title'
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
-	const [totalAmount, items, getCartItems, removeCartItem] = useCartStore(state => [state.totalAmount, state.items, state.getCartItems, state.removeCartItem])
+	const { totalAmount, items, removeCartItem, updateItemQuantity } = useCart()
 
-	useEffect(() => {
-		getCartItems()
-	}, [])
-
-	const onClickCountButton = (id: number, quantity: number, type: TCountButton) => {
-		const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1
-		updateItemQuantity(id, newQuantity)
-	}
+	const [redirecting, setRedirecting] = useState(false)
 
 	return (
 		<Sheet>
@@ -67,7 +59,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 											name={item.name}
 											price={item.price}
 											quantity={item.quantity}
-											onClickCountButton={type => onClickCountButton(item.id, item.quantity, type)}
+											onClickCountButton={type => onClickCountButton(item.id, item.quantity, type, updateItemQuantity)}
 											onClickRemove={() => removeCartItem(item.id)}
 										/>
 									</div>
@@ -86,7 +78,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 									</div>
 
 									<Link href='/checkout'>
-										<Button type='submit' className='w-full h-12 text-base'>
+										<Button loading={redirecting} onClick={() => setRedirecting(true)} type='submit' className='w-full h-12 text-base'>
 											Оформить заказ
 											<ArrowRight className='w-5 ml-2' />
 										</Button>

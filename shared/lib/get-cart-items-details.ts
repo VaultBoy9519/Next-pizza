@@ -10,7 +10,7 @@ import { CartStateItem } from './get-cart-details'
  * @param {PizzaSize} pizzaSize - size of pizza
  * @returns {string} the string of details
  */
-export const getCartItemsDetails = (ingredients: CartStateItem['ingredients'], pizzaType: PizzaType, pizzaSize: PizzaSize) => {
+export const getCartItemsDetails = (ingredients: CartStateItem['ingredients'], pizzaType?: PizzaType, pizzaSize?: PizzaSize) => {
 	const details = []
 
 	if (pizzaSize && pizzaType) {
