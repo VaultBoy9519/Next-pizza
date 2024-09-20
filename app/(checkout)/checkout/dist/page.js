@@ -1,31 +1,49 @@
 'use client';
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 exports.__esModule = true;
 var shared_1 = require("@/shared/components/shared");
 var checkout_1 = require("@/shared/components/shared/checkout");
-var checkout_item_1 = require("@/shared/components/shared/checkout/checkout-item");
-var ui_1 = require("@/shared/components/ui");
+var checkout_form_schema_1 = require("@/shared/constants/checkout-form-schema");
 var hooks_1 = require("@/shared/hooks");
-var lib_1 = require("@/shared/lib");
+var zod_1 = require("@hookform/resolvers/zod");
+var react_hook_form_1 = require("react-hook-form");
 function CheckoutPage() {
     var _a = hooks_1.useCart(), totalAmount = _a.totalAmount, items = _a.items, removeCartItem = _a.removeCartItem, updateItemQuantity = _a.updateItemQuantity;
+    var form = react_hook_form_1.useForm({
+        resolver: zod_1.zodResolver(checkout_form_schema_1.checkoutFormSchema),
+        defaultValues: {
+            email: '',
+            firstName: '',
+            lastName: '',
+            phone: '',
+            address: '',
+            comment: ''
+        }
+    });
+    var onSubmit = function (data) {
+        console.log(data);
+    };
     return (React.createElement(shared_1.Container, { className: 'mt-10' },
         React.createElement(shared_1.Title, { text: '\u041E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430', size: 'xl', className: 'font-extrabold mb-8 text-[36px]' }),
-        React.createElement("div", { className: 'flex gap-10' },
-            React.createElement("div", { className: 'flex flex-col gap-10 flex-1 mb-20' },
-                React.createElement(shared_1.WhiteBlock, { title: '1. \u041A\u043E\u0440\u0437\u0438\u043D\u0430' },
-                    React.createElement("div", { className: 'flex flex-col gap-5' }, items.map(function (item) { return (React.createElement(checkout_item_1.CheckoutItem, { key: item.id, id: item.id, imageUrl: item.imageUrl, name: item.name, price: item.price, quantity: item.quantity, details: lib_1.getCartItemsDetails(item.ingredients, item.pizzaType, item.pizzaSize), disabled: item.disabled, onClickCountButton: function (type) { return lib_1.onClickCountButton(item.id, item.quantity, type, updateItemQuantity); }, onClickRemove: function () { return removeCartItem(item.id); } })); }))),
-                React.createElement(shared_1.WhiteBlock, { title: '2. \u041F\u0435\u0440\u0441\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435' },
-                    React.createElement("div", { className: 'grid grid-cols-2 gap-5' },
-                        React.createElement(ui_1.Input, { name: 'firstName', className: 'text-base', placeholder: '\u0418\u043C\u044F' }),
-                        React.createElement(ui_1.Input, { name: 'lastName', className: 'text-base', placeholder: '\u0424\u0430\u043C\u0438\u043B\u0438\u044F' }),
-                        React.createElement(ui_1.Input, { name: 'email', className: 'text-base', placeholder: 'E-Mail' }),
-                        React.createElement(ui_1.Input, { name: 'phone', className: 'text-base', placeholder: '\u0422\u0435\u043B\u0435\u0444\u043E\u043D' }))),
-                React.createElement(shared_1.WhiteBlock, { title: '3. \u0410\u0434\u0440\u0435\u0441 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438' },
-                    React.createElement("div", { className: 'flex flex-col gap-5' },
-                        React.createElement(ui_1.Input, { name: 'firstName', className: 'text-base', placeholder: '\u0410\u0434\u0440\u0435\u0441' }),
-                        React.createElement(ui_1.Textarea, { rows: 5, className: 'text-base', placeholder: '\u041A\u043E\u043C\u043C\u0435\u043D\u0442\u0430\u0440\u0438\u0439 \u043A \u0437\u0430\u043A\u0430\u0437\u0443' })))),
-            React.createElement("div", { className: 'w-[450px]' },
-                React.createElement(checkout_1.CheckoutSidebar, { totalAmount: totalAmount })))));
+        React.createElement(react_hook_form_1.FormProvider, __assign({}, form),
+            React.createElement("form", { onSubmit: form.handleSubmit(onSubmit) },
+                React.createElement("div", { className: 'flex gap-10' },
+                    React.createElement("div", { className: 'flex flex-col gap-10 flex-1 mb-20' },
+                        React.createElement(checkout_1.CheckoutCart, { items: items, updateItemQuantity: updateItemQuantity }),
+                        React.createElement(checkout_1.CheckoutPersonalForm, null),
+                        React.createElement(checkout_1.CheckoutAddressForm, null)),
+                    React.createElement("div", { className: 'w-[450px]' },
+                        React.createElement(checkout_1.CheckoutSidebar, { totalAmount: totalAmount })))))));
 }
 exports["default"] = CheckoutPage;
