@@ -2,7 +2,7 @@
 exports.__esModule = true;
 exports.metadata = void 0;
 var google_1 = require("next/font/google");
-var react_hot_toast_1 = require("react-hot-toast");
+var components_1 = require("@/shared/components");
 require("./globals.css");
 var nunito = google_1.Nunito({
     subsets: ['cyrillic'],
@@ -18,8 +18,6 @@ function RootLayout(_a) {
         React.createElement("head", null,
             React.createElement("link", { "data-rh": 'true', rel: 'icon', href: '/logo.png' })),
         React.createElement("body", { className: nunito.className },
-            React.createElement("main", { className: 'min-h-screen' },
-                children,
-                React.createElement(react_hot_toast_1.Toaster, null)))));
+            React.createElement(components_1.Providers, null, children))));
 }
 exports["default"] = RootLayout;

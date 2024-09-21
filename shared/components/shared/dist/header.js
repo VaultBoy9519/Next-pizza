@@ -3,18 +3,19 @@
 exports.__esModule = true;
 exports.Header = void 0;
 var utils_1 = require("@/shared/lib/utils");
-var lucide_react_1 = require("lucide-react");
 var image_1 = require("next/image");
 var link_1 = require("next/link");
 var navigation_1 = require("next/navigation");
 var react_1 = require("react");
 var react_hot_toast_1 = require("react-hot-toast");
-var ui_1 = require("../ui");
 var cart_button_1 = require("./cart-button");
 var container_1 = require("./container");
+var modals_1 = require("./modals");
+var profile_button_1 = require("./profile-button");
 var search_input_1 = require("./search-input");
 exports.Header = function (_a) {
     var className = _a.className, _b = _a.hasSearch, hasSearch = _b === void 0 ? true : _b, _c = _a.hasCart, hasCart = _c === void 0 ? true : _c;
+    var _d = react_1.useState(false), openAuthModal = _d[0], setOpenAuthModal = _d[1];
     var searchParams = navigation_1.useSearchParams();
     react_1.useEffect(function () {
         if (searchParams.has('paid')) {
@@ -32,9 +33,8 @@ exports.Header = function (_a) {
             hasSearch && (React.createElement("div", { className: 'mx-10 flex-1' },
                 React.createElement(search_input_1.SearchInput, null))),
             React.createElement("div", { className: 'flex items-center gap-3' },
-                React.createElement(ui_1.Button, { variant: 'outline', className: 'flex items-center gap-1' },
-                    React.createElement(lucide_react_1.User, { size: 16 }),
-                    "\u0412\u043E\u0439\u0442\u0438"),
+                React.createElement(modals_1.AuthModal, { open: openAuthModal, onClose: function () { return setOpenAuthModal(false); } }),
+                React.createElement(profile_button_1.ProfileButton, { onClickSignIn: function () { return setOpenAuthModal(true); } }),
                 hasCart && (React.createElement("div", null,
                     React.createElement(cart_button_1.CartButton, null)))))));
 };
