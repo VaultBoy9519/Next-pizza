@@ -7,6 +7,8 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     o[k2] = m[k];
 }));
 exports.__esModule = true;
+var address_input_1 = require("./address-input");
+__createBinding(exports, address_input_1, "AddressInput");
 var cart_item_details_count_button_1 = require("./cart-item-details-count-button");
 __createBinding(exports, cart_item_details_count_button_1, "CartItemDetailsCountButton", "CountButton");
 var cart_item_details_image_1 = require("./cart-item-details-image");

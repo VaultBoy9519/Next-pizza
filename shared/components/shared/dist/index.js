@@ -29,6 +29,7 @@ var clear_button_1 = require("./clear-button");
 __createBinding(exports, clear_button_1, "ClearButton");
 var container_1 = require("./container");
 __createBinding(exports, container_1, "Container");
+__exportStar(require("./email-templates"), exports);
 var error_text_1 = require("./error-text");
 __createBinding(exports, error_text_1, "ErrorText");
 var filter_checkbox_1 = require("./filter-checkbox");

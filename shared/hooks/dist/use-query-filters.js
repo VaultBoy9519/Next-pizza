@@ -21,10 +21,14 @@ var react_1 = require("react");
  * @param filters The current filter values.
  */
 exports.useQueryFilters = function (filters) {
+    var isMounted = react_1.useRef(false);
     var router = navigation_1.useRouter();
     react_1.useEffect(function () {
-        var params = __assign(__assign({}, filters.prices), { pizzaTypes: Array.from(filters.pizzaTypes), sizes: Array.from(filters.sizes), ingredients: Array.from(filters.selectedIngredients) });
-        var query = qs_1["default"].stringify(params, { arrayFormat: 'comma' });
-        router.push("?" + query, { scroll: false });
+        if (isMounted.current) {
+            var params = __assign(__assign({}, filters.prices), { pizzaTypes: Array.from(filters.pizzaTypes), sizes: Array.from(filters.sizes), ingredients: Array.from(filters.selectedIngredients) });
+            var query = qs_1["default"].stringify(params, { arrayFormat: 'comma' });
+            router.push("?" + query, { scroll: false });
+        }
+        isMounted.current = true;
     }, [filters]);
 };
