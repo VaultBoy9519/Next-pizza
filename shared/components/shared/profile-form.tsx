@@ -1,7 +1,7 @@
 'use client'
 
+import { updateUserInfo } from '@/app/actions'
 import { registerFormSchema, TFormRegisterValues } from '@/shared/constants'
-import { updateUserInfo } from '@/shared/lib'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { signOut } from 'next-auth/react'

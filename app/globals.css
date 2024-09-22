@@ -92,3 +92,26 @@ html {
 #nprogress .spinner-icon {
 	@apply border-t-primary border-l-primary !important;
 }
+
+.react-dadata__input {
+	display: flex !important;
+	height: 3rem !important;
+	width: 100% !important;
+	border-radius: calc(var(--radius) - 2px) !important;
+	border: 1px solid #ddd !important;
+	background-color: #fff !important;
+	padding: 0.75rem 0.75rem !important;
+	outline: none !important;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px #fff !important;
+}
+
+.react-dadata__input[type='file'] {
+	border: 0 !important;
+	background-color: transparent !important;
+	font-size: 1.25rem !important;
+	font-weight: 500 !important;
+}
+
+.react-dadata__input::placeholder {
+	color: #aaa !important;
+}
