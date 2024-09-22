@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.POST = void 0;
 var prisma_client_1 = require("@/prisma/prisma-client");
-var order_success_1 = require("@/shared/components/shared/email-templates/order-success");
+var components_1 = require("@/shared/components");
 var lib_1 = require("@/shared/lib");
 var client_1 = require("@prisma/client");
 var server_1 = require("next/server");
@@ -75,7 +75,7 @@ function POST(req) {
                     _a.sent();
                     items = JSON.parse(order === null || order === void 0 ? void 0 : order.items);
                     if (!isSucceeded) return [3 /*break*/, 5];
-                    return [4 /*yield*/, lib_1.sendEmail(order.email, 'Next Pizza | Заказ успешно оформлен', order_success_1.OrderSuccessTemplate({ orderId: order.id, items: items }))];
+                    return [4 /*yield*/, lib_1.sendEmail(order.email, 'Fastfood Store | Заказ успешно оформлен', components_1.OrderSuccessTemplate({ orderId: order.id, items: items }))];
                 case 4:
                     _a.sent();
                     _a.label = 5;

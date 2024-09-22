@@ -10,7 +10,7 @@ var nunito = google_1.Nunito({
     weight: ['400', '500', '600', '700', '800', '900']
 });
 exports.metadata = {
-    title: 'Next Pizza | Главная'
+    title: 'Fast Food Store | Главная'
 };
 function RootLayout(_a) {
     var children = _a.children;

@@ -55,11 +55,7 @@ function GET(req) {
                     }
                     return [4 /*yield*/, prisma_client_1.prisma.cart.findFirst({
                             where: {
-                                OR: [
-                                    {
-                                        token: token
-                                    },
-                                ]
+                                token: token
                             },
                             include: {
                                 items: {

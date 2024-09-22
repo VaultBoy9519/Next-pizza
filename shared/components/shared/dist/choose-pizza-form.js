@@ -22,7 +22,7 @@ exports.ChoosePizzaForm = function (_a) {
     };
     return (react_1["default"].createElement("div", { className: utils_1.cn(className, 'flex flex-1') },
         react_1["default"].createElement(pizza_image_1.PizzaImage, { src: imageUrl, size: size }),
-        react_1["default"].createElement("div", { className: 'w-[490px] bg-[#f7f6f5] p-7' },
+        react_1["default"].createElement("div", { className: 'w-[490px] bg-[#f7f6f5] p-7 ' },
             react_1["default"].createElement(title_1.Title, { text: name, size: 'md', className: 'font-extrabold mb-1' }),
             react_1["default"].createElement("p", { className: 'text-gray-400' }, textDetails),
             react_1["default"].createElement("div", { className: 'flex flex-col gap-5 mt-5' },

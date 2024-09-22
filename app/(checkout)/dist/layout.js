@@ -4,7 +4,7 @@ exports.metadata = void 0;
 var shared_1 = require("@/shared/components/shared");
 var react_1 = require("react");
 exports.metadata = {
-    title: 'Next Pizza | Корзина'
+    title: 'Fastfood Store | Корзина'
 };
 function CheckoutLayout(_a) {
     var children = _a.children;

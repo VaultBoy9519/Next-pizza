@@ -1,3 +1,4 @@
+'use client';
 "use strict";
 exports.__esModule = true;
 exports.CheckoutAddressForm = void 0;

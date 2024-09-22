@@ -37,42 +37,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.createOrder = void 0;
+exports.registerUser = exports.updateUserInfo = exports.createOrder = void 0;
+var controllers_1 = require("@/prisma/controllers");
 var prisma_client_1 = require("@/prisma/prisma-client");
 var components_1 = require("@/shared/components");
 var lib_1 = require("@/shared/lib");
+var get_user_session_1 = require("@/shared/lib/get-user-session");
 var client_1 = require("@prisma/client");
+var bcrypt_1 = require("bcrypt");
 var headers_1 = require("next/headers");
 function createOrder(data) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var cookieStore, cartToken, userCart, order, paymentData, paymentUrl, e_1;
+        var cart, cookieStore, cartToken, userCart, order, paymentData, paymentUrl, e_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 8, , 9]);
+                    cart = controllers_1.prismaControllers.cart;
                     cookieStore = headers_1.cookies();
                     cartToken = (_a = cookieStore.get('cartToken')) === null || _a === void 0 ? void 0 : _a.value;
                     if (!cartToken)
                         throw new Error('Cart token not found');
-                    return [4 /*yield*/, prisma_client_1.prisma.cart.findFirst({
-                            include: {
-                                user: true,
-                                items: {
-                                    include: {
-                                        ingredients: true,
-                                        productItem: {
-                                            include: {
-                                                product: true
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            where: {
-                                token: cartToken
-                            }
-                        })];
+                    return [4 /*yield*/, cart.getByToken(cartToken)];
                 case 1:
                     userCart = _b.sent();
                     if (!userCart) {
@@ -96,19 +83,10 @@ function createOrder(data) {
                         })];
                 case 2:
                     order = _b.sent();
-                    return [4 /*yield*/, prisma_client_1.prisma.cart.update({
-                            where: { id: userCart.id },
-                            data: {
-                                totalAmount: 0
-                            }
-                        })];
+                    return [4 /*yield*/, cart.clearTotalAmount(userCart.id)];
                 case 3:
                     _b.sent();
-                    return [4 /*yield*/, prisma_client_1.prisma.cartItem.deleteMany({
-                            where: {
-                                cartId: userCart.id
-                            }
-                        })];
+                    return [4 /*yield*/, cart.deleteAllProducts(userCart.id)];
                 case 4:
                     _b.sent();
                     return [4 /*yield*/, lib_1.createPayment({ amount: order.totalAmount, orderId: order.id, description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0437\u0430\u043A\u0430\u0437\u0430 #" + order.id })];
@@ -126,7 +104,7 @@ function createOrder(data) {
                 case 6:
                     _b.sent();
                     paymentUrl = paymentData.confirmation.confirmation_url;
-                    return [4 /*yield*/, lib_1.sendEmail(data.email, "Next Pizza: \u041E\u043F\u043B\u0430\u0442\u0430 \u0437\u0430\u043A\u0430\u0437\u0430 #" + order.id, components_1.PayOrderTemplate({ orderId: order.id, totalAmount: order.totalAmount, paymentUrl: paymentUrl }))];
+                    return [4 /*yield*/, lib_1.sendEmail(data.email, "Fast Food Store: \u041E\u043F\u043B\u0430\u0442\u0430 \u0437\u0430\u043A\u0430\u0437\u0430 #" + order.id, components_1.PayOrderTemplate({ orderId: order.id, totalAmount: order.totalAmount, paymentUrl: paymentUrl }))];
                 case 7:
                     _b.sent();
                     return [2 /*return*/, paymentUrl];
@@ -140,3 +118,93 @@ function createOrder(data) {
     });
 }
 exports.createOrder = createOrder;
+function updateUserInfo(data) {
+    return __awaiter(this, void 0, void 0, function () {
+        var session, fullName, email, password, e_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, get_user_session_1.getUserSession()];
+                case 1:
+                    session = _a.sent();
+                    if (!session)
+                        throw new Error('Session not found');
+                    fullName = data.fullName, email = data.email, password = data.password;
+                    return [4 /*yield*/, prisma_client_1.prisma.user.update({
+                            where: {
+                                id: Number(session.id)
+                            },
+                            data: {
+                                fullName: fullName,
+                                email: email,
+                                password: data.password && bcrypt_1.hashSync(password, 10)
+                            }
+                        })];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_2 = _a.sent();
+                    console.log("[UpdateUserInfo] Server error", e_2);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.updateUserInfo = updateUserInfo;
+function registerUser(body) {
+    return __awaiter(this, void 0, void 0, function () {
+        var user, createdUser, code, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 5, , 6]);
+                    return [4 /*yield*/, prisma_client_1.prisma.user.findFirst({
+                            where: {
+                                email: body.email
+                            }
+                        })];
+                case 1:
+                    user = _a.sent();
+                    if (user) {
+                        if (!user.verified) {
+                            throw new Error('Почта не подтверждена');
+                        }
+                        throw new Error('Пользователь уже существует');
+                    }
+                    return [4 /*yield*/, prisma_client_1.prisma.user.create({
+                            data: {
+                                fullName: body.fullName,
+                                email: body.email,
+                                password: bcrypt_1.hashSync(body.password, 10)
+                            }
+                        })];
+                case 2:
+                    createdUser = _a.sent();
+                    code = Math.floor(100000 + Math.random() * 900000).toString();
+                    return [4 /*yield*/, prisma_client_1.prisma.verificationCode.create({
+                            data: {
+                                code: code,
+                                userId: createdUser.id
+                            }
+                        })];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, lib_1.sendEmail(createdUser.email, 'Fast Food Store / 📝 Подтверждение регистрации', components_1.VerificationUserTemplate({
+                            code: code
+                        }))];
+                case 4:
+                    _a.sent();
+                    return [3 /*break*/, 6];
+                case 5:
+                    err_1 = _a.sent();
+                    console.log('Error [CREATE_USER]', err_1);
+                    throw err_1;
+                case 6: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.registerUser = registerUser;

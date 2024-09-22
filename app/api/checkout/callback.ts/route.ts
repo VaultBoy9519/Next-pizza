@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 		})
 
 		const items: CartItemDto[] = JSON.parse(order?.items as string)
-		if (isSucceeded) await sendEmail(order.email, 'Next Pizza | Заказ успешно оформлен', OrderSuccessTemplate({ orderId: order.id, items }))
+		if (isSucceeded) await sendEmail(order.email, 'Fastfood Store | Заказ успешно оформлен', OrderSuccessTemplate({ orderId: order.id, items }))
 
 		return NextResponse.json({ success: true })
 	} catch (e) {

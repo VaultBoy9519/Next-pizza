@@ -1,5 +1,6 @@
 'use server'
 
+import { prismaControllers } from '@/prisma/controllers'
 import { prisma } from '@/prisma/prisma-client'
 import { PayOrderTemplate, VerificationUserTemplate } from '@/shared/components'
 import { CheckoutFormValues } from '@/shared/constants/checkout-form-schema'
@@ -11,28 +12,12 @@ import { cookies } from 'next/headers'
 
 export async function createOrder(data: CheckoutFormValues) {
 	try {
+		const { cart } = prismaControllers
 		const cookieStore = cookies()
 		const cartToken = cookieStore.get('cartToken')?.value
 		if (!cartToken) throw new Error('Cart token not found')
 
-		const userCart = await prisma.cart.findFirst({
-			include: {
-				user: true,
-				items: {
-					include: {
-						ingredients: true,
-						productItem: {
-							include: {
-								product: true,
-							},
-						},
-					},
-				},
-			},
-			where: {
-				token: cartToken,
-			},
-		})
+		const userCart = await cart.getByToken(cartToken)
 
 		if (!userCart) {
 			throw new Error('Cart not found')
@@ -56,18 +41,8 @@ export async function createOrder(data: CheckoutFormValues) {
 			},
 		})
 
-		await prisma.cart.update({
-			where: { id: userCart.id },
-			data: {
-				totalAmount: 0,
-			},
-		})
-
-		await prisma.cartItem.deleteMany({
-			where: {
-				cartId: userCart.id,
-			},
-		})
+		await cart.clearTotalAmount(userCart.id)
+		await cart.deleteAllProducts(userCart.id)
 
 		const paymentData = await createPayment({ amount: order.totalAmount, orderId: order.id, description: `Оплата заказа #${order.id}` })
 
@@ -84,7 +59,7 @@ export async function createOrder(data: CheckoutFormValues) {
 
 		const paymentUrl = paymentData.confirmation.confirmation_url
 
-		await sendEmail(data.email, `Next Pizza: Оплата заказа #${order.id}`, PayOrderTemplate({ orderId: order.id, totalAmount: order.totalAmount, paymentUrl }))
+		await sendEmail(data.email, `Fast Food Store: Оплата заказа #${order.id}`, PayOrderTemplate({ orderId: order.id, totalAmount: order.totalAmount, paymentUrl }))
 
 		return paymentUrl
 	} catch (e) {
@@ -149,7 +124,7 @@ export async function registerUser(body: Prisma.UserCreateInput) {
 
 		await sendEmail(
 			createdUser.email,
-			'Next Pizza / 📝 Подтверждение регистрации',
+			'Fast Food Store / 📝 Подтверждение регистрации',
 			VerificationUserTemplate({
 				code,
 			}),

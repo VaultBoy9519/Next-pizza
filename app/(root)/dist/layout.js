@@ -4,7 +4,7 @@ exports.metadata = void 0;
 var shared_1 = require("@/shared/components/shared");
 var react_1 = require("react");
 exports.metadata = {
-    title: 'Next Pizza | Главная'
+    title: 'Fast Food Store | Главная'
 };
 function HomeLayout(_a) {
     var children = _a.children, modal = _a.modal;
@@ -12,6 +12,7 @@ function HomeLayout(_a) {
         React.createElement(react_1.Suspense, null,
             React.createElement(shared_1.Header, null)),
         children,
-        modal));
+        modal,
+        React.createElement(shared_1.Footer, null)));
 }
 exports["default"] = HomeLayout;

@@ -1,7 +1,7 @@
 'use client'
 
-import { Api } from '@/shared/services/api-client'
 import { cn } from '@/shared/lib/utils'
+import { Api } from '@/shared/services/api-client'
 import { Product } from '@prisma/client'
 import { Search } from 'lucide-react'
 import Link from 'next/link'
@@ -48,7 +48,7 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 				<input
 					className='rounded-2xl outline-none w-full bg-gray-100 pl-11'
 					type='text'
-					placeholder='Найти пиццу...'
+					placeholder='Поиск...'
 					onFocus={() => setFocused(true)}
 					value={searchQuery}
 					onChange={e => setSearchQuery(e.target.value)}

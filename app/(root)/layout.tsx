@@ -1,9 +1,9 @@
-import { Header } from '@/shared/components/shared'
+import { Footer, Header } from '@/shared/components/shared'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
 export const metadata: Metadata = {
-	title: 'Next Pizza | Главная',
+	title: 'Fast Food Store | Главная',
 }
 
 export default function HomeLayout({
@@ -20,6 +20,7 @@ export default function HomeLayout({
 			</Suspense>
 			{children}
 			{modal}
+			<Footer />
 		</main>
 	)
 }
