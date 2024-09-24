@@ -84,8 +84,6 @@ Fast Food Store is an online store for ordering fast food products - pizza, sand
 
 ---
 
-# 🍕 Fast Food Store
-
 **Версия**: 1.0.0  
 **Технологии**: Next.js, React, Prisma, Tailwind CSS, Zustand
 
