@@ -6,15 +6,16 @@ export default async function Home({ searchParams }: { searchParams: GetSearchPa
 	const categories = await findPizzas(searchParams)
 
 	return (
-		<>
+		<div className='mx-10 lg:mx-5'>
 			<Container className='mt-10'>
 				<Title text='Все товары' size='lg' className='font-extrabold' />
 			</Container>
 			<TopBar categories={categories.filter(category => category.products.length > 0)} />
+
 			<Stories />
 			<Container className='pb-14 mt-10'>
 				<div className='flex gap-[60px]'>
-					<div className='w-[250px]'>
+					<div className='w-[250px] hidden lg:block'>
 						<Filters />
 					</div>
 
@@ -25,6 +26,6 @@ export default async function Home({ searchParams }: { searchParams: GetSearchPa
 					</div>
 				</div>
 			</Container>
-		</>
+		</div>
 	)
 }

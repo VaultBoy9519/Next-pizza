@@ -9,7 +9,7 @@ interface Props {
 
 export const PizzaImage: React.FC<Props> = ({ src, size, className }) => {
 	return (
-		<div className={cn('flex items-center justify-center flex-1 relative w-full', className)}>
+		<div className={cn('flex aspect-[1/1]  items-center justify-center flex-1 relative w-full', className)}>
 			<img
 				src={src}
 				alt='Logo'
