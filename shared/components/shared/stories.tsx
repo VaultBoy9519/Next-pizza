@@ -1,5 +1,6 @@
 'use client'
 
+import { useBodyStyle } from '@/shared/hooks'
 import { cn } from '@/shared/lib/utils'
 import { Api } from '@/shared/services/api-client'
 import { IStory } from '@/shared/services/stories'
@@ -16,6 +17,8 @@ export const Stories: React.FC<Props> = ({ className }) => {
 	const [stories, setStories] = React.useState<IStory[]>([])
 	const [open, setOpen] = React.useState(false)
 	const [selectedStory, setSelectedStory] = React.useState<IStory>()
+
+	useBodyStyle(open)
 
 	React.useEffect(() => {
 		async function fetchStories() {

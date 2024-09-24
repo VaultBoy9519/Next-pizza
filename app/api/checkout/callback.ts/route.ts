@@ -1,5 +1,5 @@
 import { PaymentCallbackData } from '@/@types/yookassa'
-import { prisma } from '@/prisma/prisma-client'
+import { prismaControllers } from '@/prisma/controllers'
 import { OrderSuccessTemplate } from '@/shared/components'
 import { sendEmail } from '@/shared/lib'
 import { CartItemDto } from '@/shared/services/dto/cart-dto'
@@ -7,31 +7,24 @@ import { OrderStatus } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
+	const { order } = prismaControllers
 	try {
 		const body: PaymentCallbackData = await req.json()
-		const order = await prisma.order.findFirst({
-			where: {
-				id: Number(body.object.metadata.order_id),
-			},
-		})
+		const orderId = Number(body.object.metadata.order_id)
+		const userOrder = await order.findById(orderId)
 
-		if (!order) {
+		if (!userOrder) {
 			return NextResponse.json({ error: 'Order not found' })
 		}
 
 		const isSucceeded = body.object.status === 'succeeded'
 
-		await prisma.order.update({
-			where: {
-				id: order.id,
-			},
-			data: {
-				status: isSucceeded ? OrderStatus.SUCCEEDED : OrderStatus.CANCELLED,
-			},
-		})
+		const status = isSucceeded ? OrderStatus.SUCCEEDED : OrderStatus.CANCELLED
 
-		const items: CartItemDto[] = JSON.parse(order?.items as string)
-		if (isSucceeded) await sendEmail(order.email, 'Fastfood Store | Заказ успешно оформлен', OrderSuccessTemplate({ orderId: order.id, items }))
+		await order.updateById(userOrder.id, { status })
+
+		const items: CartItemDto[] = JSON.parse(userOrder?.items as string)
+		if (isSucceeded) await sendEmail(userOrder.email, 'Fastfood Store | Заказ успешно оформлен', OrderSuccessTemplate({ orderId: userOrder.id, items }))
 
 		return NextResponse.json({ success: true })
 	} catch (e) {

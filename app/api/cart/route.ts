@@ -1,9 +1,10 @@
-import { prisma } from '@/prisma/prisma-client'
+import { prismaControllers } from '@/prisma/controllers'
 import { findOrCreateCart, updateCartTotalAmount } from '@/shared/lib'
 import { CreateCartItemValues } from '@/shared/services/dto/cart-dto'
 import crypto from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 export async function GET(req: NextRequest) {
+	const { cart } = prismaControllers
 	try {
 		const token = req.cookies.get('cartToken')?.value
 
@@ -11,26 +12,7 @@ export async function GET(req: NextRequest) {
 			return NextResponse.json({ totalAmount: 0, items: [] })
 		}
 
-		const userCart = await prisma.cart.findFirst({
-			where: {
-				token,
-			},
-			include: {
-				items: {
-					orderBy: {
-						createdAt: 'desc',
-					},
-					include: {
-						productItem: {
-							include: {
-								product: true,
-							},
-						},
-						ingredients: true,
-					},
-				},
-			},
-		})
+		const userCart = await cart.getByTokenSorted(token)
 
 		return NextResponse.json(userCart)
 	} catch (error) {
@@ -40,47 +22,26 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+	const { cartItem } = prismaControllers
 	try {
 		let token = req.cookies.get('cartToken')?.value
 		if (!token) {
 			token = crypto.randomUUID()
 		}
-		console.log('🚀 ~ POST ~ token:', token)
 
 		const userCart = await findOrCreateCart(token)
 
 		const data = (await req.json()) as CreateCartItemValues
 
-		const findCartItem = await prisma.cartItem.findFirst({
-			where: {
-				cartId: userCart.id,
-				productItemId: data.productItemId,
-				ingredients: {
-					every: {
-						id: { in: data.ingredients },
-					},
-				},
-			},
-		})
+		const { productItemId, ingredients } = data
+
+		const findCartItem = await cartItem.findItem(userCart.id, productItemId, ingredients)
 
 		if (findCartItem) {
-			await prisma.cartItem.update({
-				where: {
-					id: findCartItem.id,
-				},
-				data: {
-					quantity: findCartItem.quantity + 1,
-				},
-			})
+			await cartItem.updateQuantity(findCartItem.id, findCartItem.quantity + 1)
 		} else {
-			await prisma.cartItem.create({
-				data: {
-					cartId: userCart.id,
-					productItemId: data.productItemId,
-					quantity: 1,
-					ingredients: { connect: data.ingredients?.map(id => ({ id })) },
-				},
-			})
+			const ingredients = data.ingredients?.map(id => ({ id }))
+			await cartItem.create(userCart.id, productItemId, 1, ingredients)
 		}
 
 		const updatedUserCart = await updateCartTotalAmount(token)

@@ -1,17 +1,12 @@
-import { prisma } from '@/prisma/prisma-client'
+import { prismaControllers } from '@/prisma/controllers'
 
 export const findOrCreateCart = async (token: string) => {
-	let userCart = await prisma.cart.findFirst({
-		where: { token },
-	})
+	const { cart } = prismaControllers
+
+	let userCart = await cart.getByToken(token)
 
 	if (!userCart) {
-		userCart = await prisma.cart.create({
-			data: {
-				token,
-			},
-		})
+		userCart = await cart.create(token)
 	}
-
 	return userCart
 }

@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 
-import { prisma } from '@/prisma/prisma-client'
+import { prismaControllers } from '@/prisma/controllers'
 import { UserRole } from '@prisma/client'
 import { compare, hashSync } from 'bcrypt'
 
@@ -37,12 +37,10 @@ export const authOptions: AuthOptions = {
 					return null
 				}
 
-				const values = {
-					email: credentials.email,
-				}
+				const { user } = prismaControllers
 
-				const findUser = await prisma.user.findFirst({
-					where: values,
+				const findUser = await user.find({
+					email: credentials.email,
 				})
 
 				if (!findUser) {
@@ -74,6 +72,7 @@ export const authOptions: AuthOptions = {
 	},
 	callbacks: {
 		async signIn({ user, account }) {
+			const { user: userTable } = prismaControllers
 			try {
 				if (account?.provider === 'credentials') {
 					return true
@@ -83,36 +82,19 @@ export const authOptions: AuthOptions = {
 					return false
 				}
 
-				const findUser = await prisma.user.findFirst({
-					where: {
-						OR: [{ provider: account?.provider, providerId: account?.providerAccountId }, { email: user.email }],
-					},
-				})
+				const findUser = await userTable.findByEmailOrProviders({ email: user.email, provider: account?.provider, providerId: account?.providerAccountId })
 
 				if (findUser) {
-					await prisma.user.update({
-						where: {
-							id: findUser.id,
-						},
-						data: {
-							provider: account?.provider,
-							providerId: account?.providerAccountId,
-						},
-					})
+					await userTable.updateById(findUser.id, { provider: account?.provider, providerId: account?.providerAccountId })
 
 					return true
 				}
 
-				await prisma.user.create({
-					data: {
-						email: user.email,
-						fullName: user.name || 'User #' + user.id,
-						password: hashSync(user.id.toString(), 10),
-						verified: new Date(),
-						provider: account?.provider,
-						providerId: account?.providerAccountId,
-					},
-				})
+				const { email, name, id } = user
+				const fullName = name || 'User #' + id
+				const hashedPassword = hashSync(user.id.toString(), 10)
+
+				await userTable.create(email, fullName, hashedPassword, account?.provider, account?.providerAccountId)
 
 				return true
 			} catch (error) {
@@ -124,12 +106,8 @@ export const authOptions: AuthOptions = {
 			if (!token.email) {
 				return token
 			}
-
-			const findUser = await prisma.user.findFirst({
-				where: {
-					email: token.email,
-				},
-			})
+			const { user } = prismaControllers
+			const findUser = await user.find({ email: token.email })
 
 			if (findUser) {
 				token.id = String(findUser.id)
