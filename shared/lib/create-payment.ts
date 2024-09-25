@@ -36,6 +36,5 @@ export const createPayment = async (details: Props) => {
 			},
 		},
 	)
-
 	return data
 }

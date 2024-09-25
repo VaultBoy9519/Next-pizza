@@ -43,7 +43,11 @@ export async function createOrder(data: CheckoutFormValues) {
 
 		const paymentUrl = paymentData.confirmation.confirmation_url
 
-		await sendEmail(data.email, `Fast Food Store: Оплата заказа #${userOrder.id}`, PayOrderTemplate({ orderId: userOrder.id, totalAmount: userOrder.totalAmount, paymentUrl }))
+		try {
+			await sendEmail(data.email, `Fast Food Store: Оплата заказа #${userOrder.id}`, PayOrderTemplate({ orderId: userOrder.id, totalAmount: userOrder.totalAmount, paymentUrl }))
+		} catch (e) {
+			console.log(`[CREATE_ORDER] Error`, e)
+		}
 
 		return paymentUrl
 	} catch (e) {
