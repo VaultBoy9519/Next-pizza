@@ -14,13 +14,13 @@ export default function HomeLayout({
 	modal: React.ReactNode
 }>) {
 	return (
-		<main className='min-h-screen'>
+		<main className='min-h-screen flex flex-col'>
 			<Suspense>
 				<Header />
 			</Suspense>
-			{children}
+			<div className='flex-grow'>{children}</div>
 			{modal}
-			<Footer />
+			<Footer className='mt-auto' />
 		</main>
 	)
 }

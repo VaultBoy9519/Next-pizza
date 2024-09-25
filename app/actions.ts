@@ -29,6 +29,8 @@ export async function createOrder(data: CheckoutFormValues) {
 		const { email, phone, address, comment } = data
 		const userOrder = await order.create(cartToken, data.firstName + ' ' + data.lastName, email, phone, address, userCart.totalAmount, JSON.stringify(userCart.items), comment)
 
+		await cart.updateTotalAmount(userCart.id, 0)
+
 		await cartItem.clear(userCart.id)
 
 		const paymentData = await createPayment({ amount: userOrder.totalAmount, orderId: userOrder.id, description: `Оплата заказа #${userOrder.id}` })

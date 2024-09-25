@@ -31,7 +31,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({ name, items, imageUrl, ingred
 	}
 
 	return (
-		<div className={cn(className, 'flex flex-1 flex-col md:flex-row')}>
+		<div className={cn(className, 'flex flex-1 justify-between flex-col md:flex-row')}>
 			<PizzaImage src={imageUrl} size={size} />
 
 			<div className='md:w-[490px] w-full bg-[#f7f6f5] p-7 rounded-lg'>
